@@ -8,7 +8,7 @@ namespace Tests
         [Fact]
         public void TestName()
         {
-            int input = 29;
+            int input = 19;
             bool expectedIsHappy = true;
 
             bool actualIsHappy = new HappyNumber().IsHappy(input);
