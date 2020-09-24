@@ -31,17 +31,20 @@ Constraints:
     
 
     *)
-module Solutions.FSharp.Easy.TwoSum
+module Solutions.FSharp.Easy.TwoSumSolution
 
 
 
     let twoSum nums target =
-        let d = nums |> List.mapi (fun i x -> x, i) |> dict
+        let d = 
+            nums 
+            |> List.mapi (fun i x -> x, i) 
+            |> dict
         let pair = 
             nums 
-            |> List.mapi (fun j y -> y, j) 
-            |> List.filter (fun (y, j) -> d.ContainsKey(target - y) && d.[target-y] <> j) 
-            |> List.map (fun (y,j) -> (d.[target-y], j))
+            |> List.mapi (fun i x -> x, i) 
+            |> List.filter (fun (x, i) -> d.ContainsKey(target - x) && d.[target-x] <> i) 
+            |> List.map (fun (x,i) -> (i, d.[target-x]))
             |> List.item 0
         pair
 

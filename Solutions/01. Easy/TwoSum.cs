@@ -37,7 +37,7 @@ Constraints:
     Only one valid answer exists.
     
     */
-    public class TwoSum
+    public class TwoSumSolution
     {
         public int[] TwoSum(int[] nums, int target)
         {
