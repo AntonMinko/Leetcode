@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Compile Include="Easy/CommonPrefix.fs" />
+    <Compile Include="Easy/TwoSum.fs" />
+    <Compile Include="Medium/WordBreak.fs" />
   </ItemGroup>
 
 </Project>
