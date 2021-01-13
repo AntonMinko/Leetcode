@@ -8,6 +8,8 @@ namespace Solutions
     /*
     10. Regular Expression Matching
 
+    Solution 1 using DP + recursion
+
     Link: https://leetcode.com/problems/regular-expression-matching/
     
     Difficulty: Hard
@@ -66,124 +68,94 @@ Output: false
     */
     public class RegularExpressionMatching
     {
-        private class Pattern
-        {
-            private List<Token> _pattern = new List<Token>();
-            private int i = 0;
-            Token cur;
-            public Pattern(string p)
-            {
-                _pattern = PreparePattern(p);
-                cur = _pattern[0];
-            }
-
-            private List<Token> PreparePattern(string p)
-            {
-                var pattern = new List<Token>();
-                int N = p.Length;
-                int i = 0;
-                while (i < N)
-                {
-                    char c = p[i];
-                    if (i + 1 < N && p[i + 1] == '*')
-                    {
-                        pattern.Add(new Token(c, true));
-                        i += 2;
-                    }
-                    else
-                    {
-                        pattern.Add(new Token(c, false));
-                        i++;
-                    }
-                }
-                return pattern;
-            }
-
-            private Token MoveNext()
-            {
-                if (i < _pattern.Count - 1)
-                {
-                    i++;
-                    cur = _pattern[i];
-                }
-                else
-                {
-                    cur = null;
-                }
-
-                return cur;
-            }
-
-            public bool IsCharMatch(char c)
-            {
-                if (cur == null) return false;
-
-                if (cur.IsMatch(c))
-                {
-                    if (!cur.IsMultiple)
-                    {
-                        MoveNext();
-                    }
-                    return true;
-                }
-                else if (cur.IsMultiple)
-                {
-                    if (MoveNext() == null) return false;
-
-                    if (cur.IsMatch(c))
-                    {
-                        if (!cur.IsMultiple)
-                        {
-                            MoveNext();
-                        }
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            public bool IsEnd => cur == null || (cur.IsMultiple && i == _pattern.Count-1);
-
-            private class Token
-            {
-                public Token(char c, bool isMultiple = false)
-                {
-                    Char = c;
-                    IsMultiple = isMultiple;
-                    if (c == '.')
-                    {
-                        IsAnySingle = true;
-                    }
-                }
-                public char Char { get; }
-
-                public bool IsAnySingle { get; }
-
-                public bool IsMultiple { get; }
-
-                public bool IsMatch(char c)
-                {
-                    return IsAnySingle || Char == c;
-                }
-            }
-        }
-
-
-
         public bool IsMatch(string s, string p)
         {
-            if (String.IsNullOrEmpty(p)) return false;
-
             var pattern = new Pattern(p);
-            foreach (char c in s)
+            return pattern.Match(s);
+        }
+
+        private class CharPattern
+        {
+            public char Char { get; }
+            public bool IsAny { get; }
+            public bool IsZeroOrMore { get; }
+            public CharPattern(char c, bool isAny, bool isZeroOrMore)
             {
-                if (!pattern.IsCharMatch(c))
+                Char = c;
+                IsAny = isAny;
+                IsZeroOrMore = isZeroOrMore;
+            }
+        }
+
+        private class Pattern
+        {
+            private IList<CharPattern> _elements = new List<CharPattern>();
+
+            public Pattern(string p)
+            {
+                int N = p.Length;
+                int i = 0;
+                while (true)
                 {
-                    return false;
+                    if (i >= N) break;
+
+                    bool isAny = p[i] == '.';
+                    bool isZeroOrMore = i + 1 < N && p[i + 1] == '*' ? true : false;
+                    _elements.Add(new CharPattern(p[i], isAny, isZeroOrMore));
+                    i += isZeroOrMore ? 2 : 1;
                 }
             }
-            return pattern.IsEnd;
-        }
-    }
 
+            public bool Match(string s)
+            {
+                return Match(s, 0, 0);
+            }
+
+            private bool Match(string s, int s_i, int p_i)
+            {
+                if (s_i == s.Length && p_i == _elements.Count ||
+                    s_i == s.Length && p_i == _elements.Count - 1 && _elements[p_i].IsZeroOrMore) return true;
+                if (s_i > s.Length || p_i == _elements.Count) return false;
+
+                while (true)
+                {
+                    //Console.WriteLine($"s_i={s_i}, p_i={p_i}");
+
+                    var charPattern = _elements[p_i];
+                    if (s_i == s.Length)
+                    {
+                        if (!charPattern.IsZeroOrMore)
+                        {
+                            return false;
+                        }
+                        if (p_i == _elements.Count - 1)
+                        {
+                            return true;
+                        }
+                    }
+                    else if (charPattern.IsAny || charPattern.Char == s[s_i])
+                    {
+                        bool isMatch = Match(s, s_i + 1, charPattern.IsZeroOrMore ? p_i : p_i + 1);
+                        if (isMatch)
+                        {
+                            return true;
+                        }
+                    }
+
+                    if (charPattern.IsZeroOrMore)
+                    {
+                        ++p_i;
+                    }
+
+                    if (!charPattern.IsZeroOrMore || p_i == _elements.Count)
+                    {
+                        break;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+    }
 }

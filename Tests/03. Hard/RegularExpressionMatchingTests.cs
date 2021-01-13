@@ -15,12 +15,6 @@ namespace Tests
             this.output = output;
         }
 
-        [Fact]
-        public void TestName()
-        {
-
-        }
-
         [Theory]
         [InlineData("aa", "a", false)]
         [InlineData("aa", "a*", true)]
@@ -29,14 +23,14 @@ namespace Tests
         [InlineData("aab", "c*a*b", true)]
         [InlineData("mississippi", "mis*is*p*.", false)]
         [InlineData("mississippi", "mis*is*ip*.", true)]
-        [InlineData("", "", false)]
+        [InlineData("", "", true)]
         public void DataDrivenTest(string str, string pattern, bool isMatchExpected)
         {
-            var sut = new RegularExpressionMatching();
+            var sut = new RegularExpressionMatching_3();
             bool isMatch = sut.IsMatch(str, pattern);
 
             output.WriteLine($"Matching '{str}' against '{pattern}'");
-            Assert.Equal(isMatch, isMatchExpected);
+            Assert.Equal(isMatchExpected, isMatch);
         }
     }
 }
