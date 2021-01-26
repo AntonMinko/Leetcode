@@ -23,7 +23,7 @@ namespace Tests
             finally
             {
                 timer.Stop();
-                output.WriteLine($"Test {testId}. Execution took: {timer.ElapsedMilliseconds} ms.");
+                output.WriteLine($"Test {testId}. Execution took: {timer.ElapsedMilliseconds} ms. or {timer.ElapsedTicks} ticks.");
             }
 
         }

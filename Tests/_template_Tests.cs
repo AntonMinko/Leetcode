@@ -7,13 +7,10 @@ using FluentAssertions;
 
 namespace Tests
 {
-    public class _template_Tests
+    public class _template_Tests : BaseTests
     {
-        private readonly ITestOutputHelper output;
-
-        public _template_Tests(ITestOutputHelper output)
+        public _template_Tests(ITestOutputHelper output) : base(output)
         {
-            this.output = output;
         }
 
         [Fact]
@@ -27,9 +24,13 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData(new int[] { 0 }, 1, -1)]
-        public void DataDrivenTest(int[] nums, int target, int expectedIndex)
+        [InlineData(1, new int[] { 0 }, 1, -1)]
+        public void DataDrivenTest(int testId, int[] nums, int target, int expected)
         {
+            // var sut = new CanConstructMemoization();
+            // bool actual = MeasureAndExecute(testId, () => sut.CanConstruct(target, wordBank));
+
+            // actual.Should().Be(expectedresult);
         }
     }
 }
