@@ -28,42 +28,44 @@ Constraints:
     0 <= n <= 3 * 104
     0 <= height[i] <= 105
 
-O(n^2) time
-O(1) space
-
+O(n) time
+O(n) space
     */
-    public class TrapRainWater
+    public class TrapRainWater2
     {
         public int Trap(int[] height)
         {
             if (height.Length <= 2) return 0;
 
-            int sum = 0;
-            int leftSide = height[0];
-            int min = leftSide;
-            for (int i = 1; i < height.Length; i++)
+            int[] left = new int[height.Length];
+            int[] right = new int[height.Length];
+
+            int max = 0;
+            for (int i = 0; i < height.Length; i++)
             {
-                int curSide = height[i];
-                if (curSide < min)
+                if (height[i] > max)
                 {
-                    min = curSide;
+                    max = height[i];
                 }
-                if (curSide > min && leftSide > min)
+
+                left[i] = max;
+            }
+
+            max = 0;
+            for (int i = height.Length - 1; i >= 0; i--)
+            {
+                if (height[i] > max)
                 {
-                    int level = Math.Min(leftSide, curSide);
-                    int pos = i - 1;
-                    while (height[pos] < level)
-                    {
-                        sum += level - height[pos];
-                        height[pos] = level;
-                        pos--;
-                    }
+                    max = height[i];
                 }
-                if (curSide >= leftSide)
-                {
-                    leftSide = curSide;
-                    min = leftSide;
-                }
+
+                right[i] = max;
+            }
+
+            int sum = 0;
+            for (int i = 0; i < height.Length; i++)
+            {
+                sum += Math.Min(left[i], right[i]) - height[i];
             }
 
             return sum;
