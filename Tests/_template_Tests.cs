@@ -30,7 +30,7 @@ namespace Tests
             // var sut = new CanConstructMemoization();
             // bool actual = MeasureAndExecute(testId, () => sut.CanConstruct(target, wordBank));
 
-            // actual.Should().Be(expectedresult);
+            // actual.Should().Be(expected);
         }
     }
 }
