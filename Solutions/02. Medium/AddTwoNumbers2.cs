@@ -28,12 +28,6 @@ Output: 7 -> 8 -> 0 -> 7
 
     
     */
-    public class ListNode
-    {
-        public int val;
-        public ListNode next;
-        public ListNode(int x) { val = x; }
-    }
 
     public class AddTwoNumbers2
     {
