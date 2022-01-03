@@ -41,14 +41,68 @@ Constraints:
     0 <= ai, bi < numCourses
     ai != bi
     All the pairs [ai, bi] are distinct.
-
-    Complexity:
-        O() time complexity
-        O() space complexity
     */
     public class CourseScheduleII
     {
-        public int[] FindOrder(int numCourses, int[][] prerequisites)
+        /*
+            Complexity:
+            O(V+E) time complexity
+            O(V+E) space complexity
+        */
+        public int[] FindOrder_Kahn(int numCourses, int[][] prerequisites)
+        {
+            var indegrees = new int[numCourses];
+            var adjacencyList = new List<int>[numCourses];
+            for (int i = 0; i < numCourses; i++)
+            {
+                adjacencyList[i] = new List<int>();
+            }
+            for (int i = 0; i < prerequisites.Length; i++)
+            {
+                int fromV = prerequisites[i][1];
+                int toV = prerequisites[i][0];
+                adjacencyList[fromV].Add(toV);
+                indegrees[toV]++;
+            }
+
+            var queue = new Queue<int>();
+            for (int i = 0; i < numCourses; i++)
+            {
+                if (indegrees[i] == 0)
+                {
+                    queue.Enqueue(i);
+                }
+            }
+
+            var orderedCourses = new List<int>();
+
+            void ProcessVertice(int v)
+            {
+                orderedCourses.Add(v);
+                foreach (int dependentV in adjacencyList[v])
+                {
+                    indegrees[dependentV]--;
+                    if (indegrees[dependentV] == 0)
+                    {
+                        queue.Enqueue(dependentV);
+                    }
+                }
+            }
+
+            while (queue.Count > 0)
+            {
+                ProcessVertice(queue.Dequeue());
+            }
+
+            return orderedCourses.Count == numCourses ? orderedCourses.ToArray() : new int[0];
+        }
+
+        /*
+            Complexity:
+            O(V+E) time complexity
+            O(V+E) space complexity
+        */
+        public int[] FindOrder_dfs_stack(int numCourses, int[][] prerequisites)
         {
             // Build a graph, root vertices have no prerequisites (inverse direction)
             var adjList = new List<int>[numCourses];
