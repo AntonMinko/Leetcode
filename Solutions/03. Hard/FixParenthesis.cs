@@ -33,8 +33,8 @@ Constraints:
     There will be at most 20 parentheses in s.
     
     Complexity:
-        O() time complexity
-        O() space complexity
+        O(2^N) time complexity
+        O(N) space complexity
     */
     public class FixParenthesis
     {
