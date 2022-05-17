@@ -38,8 +38,8 @@ Constraints:
     grid[i][j] is 0 or 1
     
     Complexity:
-        O() time complexity
-        O() space complexity
+        O(n^2) time complexity - all cells in the matrix
+        O(n^2) space complexity
     */
     public class ShortestPathInBinaryMatrix
     {
