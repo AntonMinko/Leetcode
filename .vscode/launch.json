@@ -10,11 +10,11 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Solutions.Console/bin/Debug/netcoreapp3.1/Solutions.Console.exe",
+            "program": "${workspaceFolder}/Solutions.Console/bin/Debug/net6.0/Solutions.Console.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "stopAtEntry": false
+            "stopAtEntry": false,
+            "console": "internalConsole"
         },
         {
             "name": ".NET Core Attach",
